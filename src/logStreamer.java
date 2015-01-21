@@ -5,7 +5,7 @@ import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 
-public class logProducer {
+public class logStreamer {
 
     private File logFile; // The log file to be streamed
     private String topic; // The topic created on kafka server
@@ -16,7 +16,7 @@ public class logProducer {
     long orgLogSize;            //  The log file's size in bytes
 
     //Constructor for the logProducer
-    public logProducer(String[] args)
+    public logStreamer(String[] args)
     {
         if (args.length < 5) {
             System.out.println("Please enter all the required arguments as following:");
@@ -93,7 +93,7 @@ public class logProducer {
 
     public static void main(String[] args) throws Exception
     {
-        logProducer lp = new logProducer(args);
+        logStreamer lp = new logStreamer(args);
         lp.run();
     }
 }
