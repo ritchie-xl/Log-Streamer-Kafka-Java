@@ -82,7 +82,6 @@ public class logStreamer {
         if(br!=null){
             br.close();
         }
-
     }
 
     public void stop() throws Exception

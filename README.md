@@ -2,14 +2,14 @@
 Use kafka to stream log real time from 
 a simple log4j log generate
 
-# Prerequiste
+# Prerequisite
 A running kafka server base on a zookeeper cluster
 
 # Log Generator
-Use log4j to constructa simple log generate real timely and saved to the log file every 0.5 sec
+Use log4j to construct simple log generate real timely and saved to the log file every 0.5 sec
 
 # Log Streamer ( called producer in kafka)
-Read the log file repeatly and once new logs have been added to the log file, 
+Read the log file repeat and once new logs have been added to the log file,
 
 start streaming the newly added logs to the kafka server so that the kafka consumer can 
 
