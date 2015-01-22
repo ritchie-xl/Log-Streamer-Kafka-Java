@@ -34,14 +34,16 @@ public class logStreamer {
     // Streaming the log file
     public void run() throws Exception
     {
+        String line;
+        
         Properties props = new Properties();
 
-        FileInputStream fis=null;
-        Scanner sc = null;
-        FileWriter fw = null;
-        String lastByte;
+        FileInputStream fis;
+        Scanner sc ;
+        FileWriter recordWriter =null;
+        String lastByte ;
 
-        BufferedReader br = new BufferedReader(new FileReader(record));
+        BufferedReader recordReader = new BufferedReader(new FileReader(record));
 
         // Set producer properties
         props.put("metadata.broker.list", brokerList);
@@ -51,37 +53,34 @@ public class logStreamer {
         Producer<String, String> producer = new Producer<String, String>(config);
 
         // Read how much log file has been streamed in bytes
-        lastByte = br.readLine();
-        orgLogSize = Long.parseLong(lastByte);
+        lastByte = recordReader.readLine();
+        orgLogSize = (lastByte == null)? 0 : Long.parseLong(lastByte);
 
         // Run the producer to streaming the newly added logs
         while(keepRunning){
             // If there are any logs added, streaming the newly added logs
             if(logFile.length() > orgLogSize){
-                fw = new FileWriter(record);
+                recordWriter = new FileWriter(record);
                 fis = new FileInputStream(logFile);
                 fis.skip(orgLogSize);
                 sc = new Scanner(fis);
-                String line;
                 while(sc.hasNextLine()){
                     line = sc.nextLine();
                     KeyedMessage<String, String> data = new KeyedMessage<String, String>(topic, kafkaServer, line);
                     producer.send(data);
                 }
                 orgLogSize = logFile.length();
-                fw.write(String.valueOf(orgLogSize));
-                fw.flush();
+                recordWriter.write(String.valueOf(orgLogSize));
+                recordWriter.flush();
             }
         }
 
         // Close all the fileWrite and bufferReader
-        if(fw!=null){
-            fw.close();
+        if(recordWriter!=null){
+            recordWriter.close();
         }
 
-        if(br!=null){
-            br.close();
-        }
+        recordReader.close();
     }
 
     public void stop() throws Exception

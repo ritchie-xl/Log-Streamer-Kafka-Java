@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -16,14 +17,17 @@ public class logGenerator{
         logger = Logger.getLogger(logGenerator.class);
     }
 
-
     private void writeLogs() throws Exception {
-        int count =0;
+        double mean = 100.0;
+        double variance = 10.0;
+        Random random = new Random();
+        
         while(true) {
             // Generate a test log every 0.5 sec
+            double newNumber = mean + random.nextGaussian()*variance;
             Thread.sleep(500);
-            count = count + 1;
-            logger.info("line=" + (count) + " this is test:" + count + " test  test  test  test  test ");
+            System.out.println(newNumber);
+            logger.info(newNumber+"");
         }
     }
 
